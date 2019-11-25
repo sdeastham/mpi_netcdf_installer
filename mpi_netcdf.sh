@@ -31,9 +31,9 @@ if [[ "z$NETCDF_HOME" == "z" ]]; then
 elif [[ "z$NETCDF_FORTRAN_HOME" == "z" ]]; then
    echo "Variable NETCDF_FORTRAN_HOME must be defined"
    exit 80
-elif [[ "z$UTIL_INSTALL_DIR" == "z" ]]; then
-   echo "Varaible UTIL_INSTALL_DIR must be defined"
-   exit 80
+elif [[ "$NETCDF_HOME" != "$NETCDF_FORTRAN_HOME" ]]; then
+   echo "NETCDF_HOME must match NETCDF_FORTRAN_HOME"
+   exit 81
 fi
 
 read -p "Temporary directory will be created in $TMPDIR; would you like to change this? [y/n]" change_dir
@@ -96,20 +96,19 @@ if [[ $? -ne 0 ]]; then
 fi
 echo "Using temporary directory $srcDir"
 
-if [[ ! -d $UTIL_INSTALL_DIR ]]; then
-   echo "Making base installation directory first"
-   mkdir $UTIL_INSTALL_DIR
-fi
-
 clobberDir=0
 if [[ -d $installDir ]]; then
    echo "WARNING: Installation directory $installDir already exists"
    if [[ $clobberDir -eq 0 ]]; then
       echo "Clobbering disabled. To proceed with the installation, either delete the current installation directory or (UNSAFE) set clobberDir in the installation script to a non-zero value"
-      exit 1
+      exit 91
    fi
 else
    mkdir $installDir
+   if [[ $? -ne 0 ]]; then
+      echo "Could not make installation directory. Aborting"
+      exit 92
+   fi
 fi
 
 cp -a src_all/* $srcDir/.
@@ -162,9 +161,9 @@ echo "Installing ZLib to $ZDIR"
 cd $srcDir
 mkdir -p zlib
 cd zlib
-cp ../zlib-1.2.11.tar.gz .
-tar -xzf zlib-1.2.11.tar.gz
-cd zlib-1.2.11
+cp ../zlib-${zlib_version}.tar.gz .
+tar -xzf zlib-${zlib_version}.tar.gz
+cd zlib-${zlib_version}
 ./configure --prefix=${ZDIR}
 make
 make check
@@ -182,9 +181,9 @@ echo "Installing SZip to $SZDIR"
 cd $srcDir
 mkdir szip
 cd szip
-cp ../szip-2.1.1.tar.gz .
-tar -xzf szip-2.1.1.tar.gz
-cd szip-2.1.1
+cp ../szip-${szip_version}.tar.gz .
+tar -xzf szip-${szip_version}.tar.gz
+cd szip-${szip_version}
 ./configure --prefix=$SZDIR
 make
 make install
