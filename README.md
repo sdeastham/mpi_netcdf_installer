@@ -1,6 +1,9 @@
 # mpi_netcdf_installer
 Scripts to download and install all the libraries needed for NetCDF
 
+WARNING: You use this set of scripts at your own risk! It was written and configured for use in a small number
+of MIT computing environments, and has not been widely tested.
+
 You will need the following environment variables:
 * `NETCDF_HOME`: This is where the bin, include, and lib folders will be installed. It must NOT already exist
 * `NETCDF_FORTRAN_HOME`: This must be the same as `$NETCDF_HOME`
@@ -8,7 +11,7 @@ You will need the following environment variables:
 * `FC`: A working Fortran compiler
 * `CXX`: A working C++ compiler
 
-If you already have a working MPI simulation, then you can skip Step 2, but you must also have the following
+If you already have a working MPI implementation, then you can skip Step 2, but you must also have the following
 environment variables set:
 
 * `MPI_ROOT`: The root directory for your MPI installation (i.e. `$MPI_ROOT/bin/mpicc` should exist)
