@@ -33,7 +33,7 @@ access to the internet.
 
 If the user does NOT have a working MPI installation, this package comes with some (albeit only lightly-tested) scripts
 which can attempt to do so for them. This comes in two steps. The first is to install the OpenUCX communication framework,
-which replaced the "openib" transport layer in OpenMPI v4+.
+which replaced the "`openib`" transport layer in OpenMPI v4+.
 
 #### Step 2a: Installing OpenUCX v1.6.1
 
@@ -42,12 +42,15 @@ OpenUCX build process by running
 
 `./ucx_build.sh /path/to/target/dir`
 
-with your desired target directory inserted as required. Note that this will download and install OpenUCX v1.6.1; at time
-of writing (2019-11-25), there was a bug preventing OpenMPI v4.x.x from compiling with OpenUCX v1.7. This is however
-expected to be fixed soon.
+with your desired target directory inserted as required. Once OpenUCX is installed, be sure to modify you `PATH` and
+`LD_LIBRARY_PATH` variables as suggested (and to do so in the bashrc file you will be using to build and run your MPI
+applications).
 
-Once OpenUCX is installed, be sure to modify you `PATH` and `LD_LIBRARY_PATH` variables as suggested (and to do so in the
-bashrc file you will be using to build and run your MPI applications).
+A note on OpenMPI and OpenUCX versions: At time of writing (2019-11-25), there was a bug preventing OpenMPI v4.x.x
+from compiling with OpenUCX v1.7. A fix appears to have been merged into the master branch of OpenMPI - see
+https://github.com/open-mpi/ompi/pull/7144 - so this issue should be resolved in OpenMPI 4.0.3. Once that is released,
+it should be safe to update this set of scripts to download and install OpenUCX v1.7.x and OpenMPI v4.0.3. For now,
+this script downloads and installs the latest OpenMPI (v4.0.2) and a compatible version of OpenUCX (v1.6.1).
 
 #### Step 2b: Installing OpenMPI v4.x.x
 
@@ -94,14 +97,14 @@ invoke the build process with
 
 `./mpi_netcdf -s curl,zlib`
 
-The argument to "-s" must be a comma-seperated list, made up of the values below:
+The argument to "-s" must be a comma-seperated list, made up of the values (on the left) below:
 
-* curl            : curl
-* zlib            : zlib
-* szip            : szip
-* hdf             : HDF-5
-* netcdf-c        : NetCDF-C
-* netcdf-fortran  : NetCDF-Fortran
+* `curl`            : curl
+* `zlib`            : zlib
+* `szip`            : szip
+* `hdf`             : HDF-5
+* `netcdf-c`        : NetCDF-C
+* `netcdf-fortran`  : NetCDF-Fortran
 
 Note that, for curl, this should not be necessary - presence of the curl library should be automatically detected.
 The user can also choose to skip automatic library detection by providing the "`-f`" ("force") argument. Combining
