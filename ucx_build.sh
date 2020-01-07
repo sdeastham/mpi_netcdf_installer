@@ -64,7 +64,7 @@ echo "Using temporary directory $srcDir"
 cd $srcDir
 wget -nd https://github.com/openucx/ucx/releases/download/v${ucx_version}/ucx-${ucx_version}.tar.gz
 tar -xzf ucx-${ucx_version}.tar.gz
-cd ucx-${ucx_version}.tar.gz
+cd ucx-${ucx_version}
 # NOTE: MOST USERS WILL NOT WANT THE MLX5 OPTION!
 ./configure --prefix=$1 --enable-mt $mlx5_opt
 if [[ $? -ne 0 ]]; then
