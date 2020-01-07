@@ -7,12 +7,12 @@ of MIT computing environments, and has not been widely tested.
 You will need the following environment variables:
 * `NETCDF_HOME`: This is where the bin, include, and lib folders will be installed. It must NOT already exist
 * `NETCDF_FORTRAN_HOME`: This must be the same as `$NETCDF_HOME`
-* `CC`: A working C compiler
-* `FC`: A working Fortran compiler
-* `CXX`: A working C++ compiler
+* `CC`: A working C compiler, e.g. `icc` or `gcc`
+* `FC`: A working Fortran compiler, e.g. `ifort` or `gfortran`
+* `CXX`: A working C++ compiler, e.g. `icpc` or `g++`
 * `MPI_ROOT`: The root directory for your MPI installation. See the note below!
 
-If you already have a working MPI implementation, then your `CC`, `FC`, and `CXX` should be set to MPI wrappers such as `mpicc`, `mpif90`, and so on, and `$MPI_ROOT/bin/mpicc` should exist. In this case you can also skip Step 2 below. If you do NOT yet have a working MPI installation, then you will need to run Step 2 and you still need to set a value for `MPI_ROOT` (i.e. it should be where you will want your MPI implementation to be installed), but `CC` should temporarily be set to (eg) `icc` or `gcc`, and so on for `FC` and `CXX`.
+If you already have a working MPI implementation, then `$MPI_ROOT/bin/mpicc` should exist. In this case you can skip Step 2 below. If you do NOT yet have a working MPI installation, then you will need to run Step 2 and you still need to set a value for `MPI_ROOT` (i.e. it should be where you will want your MPI implementation to be installed). *In all cases, `CC`, `FC`, and `CXX` should be set to the serial compilers and NOT to MPI wrappers such as `mpicc`!*
 
 ## Installation:
 
