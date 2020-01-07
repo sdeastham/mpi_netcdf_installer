@@ -122,7 +122,7 @@ fi
 if [[ "z$TMPDIR" == "z" ]]; then
     change_dir=y
 else
-    read -p "Temporary directory will be created in $TMPDIR; would you like to change this? [y/n]" change_dir
+    read -p "Temporary directory will be created in $TMPDIR; would you like to change this? [y/n] " change_dir
 fi
 if [[ "$change_dir" == "y" ]]; then
    read -p "Please enter target directory for temporary files: " new_tmpdir
@@ -156,6 +156,7 @@ else
    echo "Must give y/n answer"
    exit 70
 fi
+
 echo "CC  => " $CC
 echo "CXX => " $CXX
 echo "FC  => " $FC
@@ -171,6 +172,15 @@ fi
 if [[ "x$F90" == "x" ]]; then
     echo "Fortran compilers not fully set up"
     exit 90
+fi
+
+if [[ "$MPI_ROOT/bin/mpicc" != $( which mpicc ) ]]; then
+   echo "WARNING: which mpicc gives $( which mpicc ) and your MPI root is $MPI_ROOT"
+   read -p "Are you sure you wish to proceed? [y/n] " keep_going
+   if [[ "$keep_going" != "y" ]]; then
+      echo "Aborting"
+      exit 95
+   fi
 fi
 
 # Set up an installation directory
@@ -386,9 +396,9 @@ echo "You have successfully installed NetCDF and all the supporting packages!"
 echo "It is STRONGLY RECOMMENDED that you now modify the .bashrc file which  "
 echo "you use to run your chosen application to include the following lines: "
 echo ""
-echo "export \$NETCDF_HOME=$NETCDF_HOME"
-echo "export \$NETCDF_FORTRAN_HOME=$NETCDF_FORTRAN_HOME"
-echo "export \$PATH=\${NETCDF_HOME}/bin:\$PATH" 
-echo "export \$LD_LIBRARY_PATH=\${NETCDF_HOME}/lib:\$LD_LIBRARY_PATH" 
+echo "export NETCDF_HOME=$NETCDF_HOME"
+echo "export NETCDF_FORTRAN_HOME=$NETCDF_FORTRAN_HOME"
+echo "export PATH=\${NETCDF_HOME}/bin:\$PATH" 
+echo "export LD_LIBRARY_PATH=\${NETCDF_HOME}/lib:\$LD_LIBRARY_PATH" 
 
 exit 0
