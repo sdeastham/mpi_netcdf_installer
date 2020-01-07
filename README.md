@@ -10,11 +10,9 @@ You will need the following environment variables:
 * `CC`: A working C compiler
 * `FC`: A working Fortran compiler
 * `CXX`: A working C++ compiler
-
-If you already have a working MPI implementation, then you can skip Step 2, but you must also have the following
-environment variables set:
-
 * `MPI_ROOT`: The root directory for your MPI installation (i.e. `$MPI_ROOT/bin/mpicc` should exist)
+
+If you already have a working MPI implementation, then you can skip Step 2, but you still need to have `MPI_ROOT` set.
 
 ## Installation:
 
