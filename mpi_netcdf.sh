@@ -7,8 +7,8 @@ curl_version="7.67.0"
 zlib_version="1.2.11"
 szip_version="2.1.1"
 hdf_version="1.8.20"
-ncc_version="4.7.0"
-ncf_version="4.4.5"
+ncc_version="4.7.3"
+ncf_version="4.5.2"
 openmpi_version="4.0.2"
 
 # Initialize our own variables:
