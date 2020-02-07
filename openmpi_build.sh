@@ -19,7 +19,7 @@ else
     ucx_opt="--with-ucx=$UCX_DIR"
 fi
 
-srcDir=$(mktemp -d -t ci-XXXXXXXXXX --tmpdir=/home/seastham/tmp)
+srcDir=$(mktemp -d -t ci-XXXXXXXXXX)
 if [[ ! -d $srcDir ]]; then
    echo "Source dir $srcDir does not exist"
    exit 90

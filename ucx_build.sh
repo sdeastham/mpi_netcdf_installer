@@ -29,7 +29,6 @@ else
     exit 77
 fi
 
-#TMPDIR=/home/seastham/tmp
 if [[ "z$TMPDIR" == "z" ]]; then
     echo "TMPDIR not set"
     kp_tmp=n
