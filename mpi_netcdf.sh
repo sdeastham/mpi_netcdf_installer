@@ -6,7 +6,7 @@
 curl_version="7.67.0"
 zlib_version="1.2.11"
 szip_version="2.1.1"
-hdf_version="1.8.20"
+hdf_version="1.10.6"
 ncc_version="4.7.3"
 ncf_version="4.5.2"
 openmpi_version="4.0.2"
@@ -46,7 +46,7 @@ while getopts "ds:f" opt; do
                else
                    echo "Invalid argument given: $skip_lib"
                    exit 94
-               fi 
+               fi
             done
             ;;
     esac
@@ -257,7 +257,7 @@ if [[ "$install_curl" == "true" ]]; then
    make
    make test
    make install
-   
+
    if [[ $? -eq 0 ]]; then
       echo "curl successfully installed"
    else
@@ -279,7 +279,7 @@ if [[ "$install_zlib" == "true" ]]; then
    make
    make check
    make install
-   
+
    if [[ -e $ZDIR/lib/libz.a ]]; then
       echo "ZLib successfully installed"
    else
@@ -301,7 +301,7 @@ if [[ "$install_szip" == "true" ]]; then
    make
    make install
    make check
-   
+
    if [[ $? -eq 0 ]]; then
       echo "SZip successfully installed"
    else
@@ -324,7 +324,7 @@ if [[ "$install_hdf5" == "true" ]]; then
    # WARNING: This can sometimes take a VERY long time!
    make check
    make install
-   
+
    if [[ -e $H5DIR/bin/h5copy ]]; then
       echo "HDF-5 successfully installed"
    else
@@ -352,7 +352,7 @@ if [[ "$install_ncc" == "true" ]]; then
    make
    make check
    make install
-   
+
    if [[ -e $NCDIR/bin/nc-config ]]; then
       echo "NetCDF-C ${ncc_version} successfully installed"
    else
@@ -377,7 +377,7 @@ if [[ "$install_ncf" == "true" ]]; then
    make
    make check
    make install
-   
+
    if [[ -e $NFDIR/bin/nf-config ]]; then
       echo "NetCDF-Fortran successfully installed"
    else
@@ -398,7 +398,7 @@ echo "you use to run your chosen application to include the following lines: "
 echo ""
 echo "export NETCDF_HOME=$NETCDF_HOME"
 echo "export NETCDF_FORTRAN_HOME=$NETCDF_FORTRAN_HOME"
-echo "export PATH=\${NETCDF_HOME}/bin:\$PATH" 
-echo "export LD_LIBRARY_PATH=\${NETCDF_HOME}/lib:\$LD_LIBRARY_PATH" 
+echo "export PATH=\${NETCDF_HOME}/bin:\$PATH"
+echo "export LD_LIBRARY_PATH=\${NETCDF_HOME}/lib:\$LD_LIBRARY_PATH"
 
 exit 0
