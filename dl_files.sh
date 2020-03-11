@@ -52,7 +52,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 dir_name="hdf5-${hdf_version}"
-web_address="https://support.hdfgroup.org/ftp/HDF5/prev-releases/hdf5-1.8/${dir_name}/src/${dir_name}.tar.gz"
+web_address="https://support.hdfgroup.org/ftp/HDF5/prev-releases/hdf5-1.10/${dir_name}/src/${dir_name}.tar.gz"
 wget -c -nd $web_address
 if [[ $? -ne 0 ]]; then
    echo "Failed to download HDF-5"
