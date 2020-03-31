@@ -19,6 +19,11 @@ if [[ $# -ge 7 ]]; then
 else
    openmpi_version=NO_MPI
 fi
+if [[ $# -ge 8 ]]; then
+   cmake_version=$8
+else
+   cmake_version=NO_CMAKE
+fi
 
 if [[ ! -d src_all ]]; then
    mkdir src_all
@@ -80,7 +85,18 @@ else
    web_address="https://download.open-mpi.org/release/open-mpi/v${sub_version}/openmpi-${openmpi_version}.tar.gz"
    wget -c -nd $web_address
    if [[ $? -ne 0 ]]; then
-      echo "Failed to download NetCDF-Fortran"
+      echo "Failed to download OpenMPI"
+      exit 80
+   fi
+fi
+
+if [[ "$cmake_version" == "NO_CMAKE" ]]; then
+   echo "Skipping cmake (no version given)"
+else
+   web_address="https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}.tar.gz"
+   wget -c -nd $web_address
+   if [[ $? -ne 0 ]]; then
+      echo "Failed to download cmake"
       exit 80
    fi
 fi

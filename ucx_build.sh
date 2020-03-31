@@ -65,6 +65,10 @@ wget -nd https://github.com/openucx/ucx/releases/download/v${ucx_version}/ucx-${
 tar -xzf ucx-${ucx_version}.tar.gz
 cd ucx-${ucx_version}
 # NOTE: MOST USERS WILL NOT WANT THE MLX5 OPTION!
+
+echo "CC is $CC"
+echo "CXX is $CXX"
+echo "FC is $FC"
 ./configure --prefix=$1 --enable-mt $mlx5_opt
 if [[ $? -ne 0 ]]; then
     echo "Configure failed"

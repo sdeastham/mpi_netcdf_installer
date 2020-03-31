@@ -6,10 +6,11 @@
 curl_version="7.67.0"
 zlib_version="1.2.11"
 szip_version="2.1.1"
-hdf_version="1.8.20"
+hdf_version="1.10.6"
 ncc_version="4.7.3"
 ncf_version="4.5.2"
 openmpi_version="4.0.2"
+cmake_version="3.16.5"
 
 # Initialize our own variables:
 install_curl=true
@@ -18,12 +19,16 @@ install_szip=true
 install_hdf5=true
 install_ncc=true
 install_ncf=true
+install_cmake=false
 dry_run=false
 force_install=false
-while getopts "ds:f" opt; do
+while getopts "cds:f" opt; do
     case "$opt" in
         d)
             dry_run=true
+            ;;
+        c)
+            install_cmake=true
             ;;
         f)
             force_install=true
@@ -43,6 +48,8 @@ while getopts "ds:f" opt; do
                    install_ncc=false
                elif [[ "$skip_lib" == "netcdf-fortran" ]]; then
                    install_ncf=false
+               elif [[ "$skip_lib" == "cmake" ]]; then
+                   install_cmake=false
                else
                    echo "Invalid argument given: $skip_lib"
                    exit 94
@@ -92,10 +99,11 @@ echo "Install szip           :  $install_szip"
 echo "Install HDF-5          :  $install_hdf5"
 echo "Install NetCDF-C       :  $install_ncc"
 echo "Install NetCDF-Fortran :  $install_ncf"
+echo "Install CMake          :  $install_cmake"
 
 if [[ "$dry_run" == "true" || ! -d src_all ]]; then
    echo "Setting up source code directory (one-time operation)"
-   ./dl_files.sh $curl_version $zlib_version $szip_version $hdf_version $ncc_version $ncf_version $openmpi_version
+   ./dl_files.sh $curl_version $zlib_version $szip_version $hdf_version $ncc_version $ncf_version $openmpi_version $cmake_version
    if [[ $? -ne 0 ]]; then
       echo "Failed to download source files"
       exit 90
