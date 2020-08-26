@@ -37,7 +37,7 @@ for sub_dir in $MPI_ROOT; do
    fi
 done
 
-OMPI_DIR=openmpi-4.0.2
+OMPI_DIR=openmpi-4.0.4
 cd $srcDir
 tar -xzf ${OMPI_DIR}.tar.gz
 cd $OMPI_DIR

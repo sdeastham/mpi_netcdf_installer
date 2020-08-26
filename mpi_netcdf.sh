@@ -9,8 +9,9 @@ szip_version="2.1.1"
 hdf_version="1.10.6"
 ncc_version="4.7.3"
 ncf_version="4.5.2"
-openmpi_version="4.0.2"
+openmpi_version="4.0.4"
 cmake_version="3.16.5"
+mvapich2_version="2.3.4"
 
 # Initialize our own variables:
 install_curl=true
@@ -103,7 +104,7 @@ echo "Install CMake          :  $install_cmake"
 
 if [[ "$dry_run" == "true" || ! -d src_all ]]; then
    echo "Setting up source code directory (one-time operation)"
-   ./dl_files.sh $curl_version $zlib_version $szip_version $hdf_version $ncc_version $ncf_version $openmpi_version $cmake_version
+   ./dl_files.sh $curl_version $zlib_version $szip_version $hdf_version $ncc_version $ncf_version $openmpi_version $cmake_version $mvapich2_version
    if [[ $? -ne 0 ]]; then
       echo "Failed to download source files"
       exit 90

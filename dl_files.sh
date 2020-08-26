@@ -24,6 +24,11 @@ if [[ $# -ge 8 ]]; then
 else
    cmake_version=NO_CMAKE
 fi
+if [[ $# -ge 9 ]]; then
+   mvapich2_version=$9
+else
+   mvapich2_version=NO_MPI
+fi
 
 if [[ ! -d src_all ]]; then
    mkdir src_all
@@ -86,6 +91,19 @@ else
    wget -c -nd $web_address
    if [[ $? -ne 0 ]]; then
       echo "Failed to download OpenMPI"
+      exit 80
+   fi
+fi
+
+#2.3.4
+if [[ "$mvapich2_version" == "NO_MPI" ]]; then
+   echo "Skipping MVAPICH2 (no version given)"
+else
+   #sub_version="${mvapich2_version%.*}"
+   web_address="http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${mvapich2_version}.tar.gz"
+   wget -c nd $web_address
+   if [[ $? -ne 0 ]]; then
+      echo "Failed to download MVAPICH2"
       exit 80
    fi
 fi

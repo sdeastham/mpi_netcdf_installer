@@ -36,7 +36,7 @@ If the user does NOT have a working MPI installation, this package comes with so
 which can attempt to do so for them. This comes in two steps. The first is to install the OpenUCX communication framework,
 which replaced the "`openib`" transport layer in OpenMPI v4+.
 
-#### Step 2a: Installing OpenUCX v1.6.1
+#### Step 2a: Installing OpenUCX v1.8.1
 
 As long as your compilers are correctly set up in the environment (ie "`CC=gcc`" or "`CC=icc`" and so on), you can start the
 OpenUCX build process by running
@@ -47,11 +47,7 @@ with your desired target directory inserted as required. Once OpenUCX is install
 `LD_LIBRARY_PATH` variables as suggested (and to do so in the bashrc file you will be using to build and run your MPI
 applications).
 
-A note on OpenMPI and OpenUCX versions: At time of writing (2019-11-25), there was a bug preventing OpenMPI v4.x.x
-from compiling with OpenUCX v1.7. A fix appears to have been merged into the master branch of OpenMPI - see
-https://github.com/open-mpi/ompi/pull/7144 - so this issue should be resolved in OpenMPI 4.0.3. Once that is released,
-it should be safe to update this set of scripts to download and install OpenUCX v1.7.x and OpenMPI v4.0.3. For now,
-this script downloads and installs the latest OpenMPI (v4.0.2) and a compatible version of OpenUCX (v1.6.1).
+A note on OpenMPI and OpenUCX versions: There are two specific version clashes which are known to cause issues. Firstly, OpenMPI 4.0.2 does not work with versions of OpenUCX v1.7+, but this bug is resolved with OpenMPI 4.0.3. Secondly, versions of OpenUCX prior to v1.7 appear to have an issue where certain floating point exceptions result in an incomplete traceback, complicating debug. It is therefore STRONGLY recommened that you use OpenUCX v1.7+ with OpenMPI 4.0.3+. This script downloads and installs OpenMPI 4.0.4 with OpenUCX v1.8.1, which should avoid both of these issues and has been successfully tested with GCHPctm v12.9.0.
 
 #### Step 2b: Installing OpenMPI v4.x.x
 

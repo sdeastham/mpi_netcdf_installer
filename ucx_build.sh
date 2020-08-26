@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ucx_version=1.6.1
+ucx_version=1.8.1
 
 if [[ $# -ne 1 ]]; then
     echo "Need path for UCX install!"
