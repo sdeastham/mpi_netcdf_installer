@@ -101,7 +101,7 @@ if [[ "$mvapich2_version" == "NO_MPI" ]]; then
 else
    #sub_version="${mvapich2_version%.*}"
    web_address="http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${mvapich2_version}.tar.gz"
-   wget -c nd $web_address
+   wget -c -nd $web_address
    if [[ $? -ne 0 ]]; then
       echo "Failed to download MVAPICH2"
       exit 80
