@@ -328,7 +328,7 @@ if [[ "$install_hdf5" == "true" ]]; then
    cp ../hdf5-${hdf_version}.tar.gz .
    tar -xzf hdf5-${hdf_version}.tar.gz
    cd hdf5-${hdf_version}
-   ./configure --enable-parallel --with-zlib=${ZDIR} --with-szlib=${SZDIR} --prefix=${H5DIR}
+   ./configure --enable-parallel --with-zlib=${ZDIR} --with-szlib=${SZDIR} --prefix=${H5DIR} --enable-fortran
    make
    # WARNING: This can sometimes take a VERY long time!
    make check
