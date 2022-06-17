@@ -5,10 +5,14 @@
 
 curl_version="7.67.0"
 zlib_version="1.2.11"
+#zlib_version="1.2.12"
 szip_version="2.1.1"
 hdf_version="1.10.6"
-ncc_version="4.7.3"
-ncf_version="4.5.2"
+#ncc_version="4.7.3"
+ncc_version="4.7.4"
+#ncf_version="4.5.2"
+ncf_version="4.5.4"
+ncpp_version="4.3.1"
 openmpi_version="4.0.4"
 cmake_version="3.16.5"
 mvapich2_version="2.3.4"
@@ -20,10 +24,12 @@ install_szip=true
 install_hdf5=true
 install_ncc=true
 install_ncf=true
+install_nc_cpp=false
 install_cmake=false
 dry_run=false
 force_install=false
-while getopts "cds:f" opt; do
+clobberDir=0
+while getopts "cdops:f" opt; do
     case "$opt" in
         d)
             dry_run=true
@@ -33,6 +39,12 @@ while getopts "cds:f" opt; do
             ;;
         f)
             force_install=true
+            ;;
+        o)
+            clobberDir=1
+            ;;
+        p)
+            install_nc_cpp=true
             ;;
         s)  skip_list=$OPTARG
             for skip_lib in $(echo $skip_list | sed "s/,/ /g")
@@ -100,11 +112,12 @@ echo "Install szip           :  $install_szip"
 echo "Install HDF-5          :  $install_hdf5"
 echo "Install NetCDF-C       :  $install_ncc"
 echo "Install NetCDF-Fortran :  $install_ncf"
+echo "Install NetCDF-C++     :  $install_nc_cpp"
 echo "Install CMake          :  $install_cmake"
 
 if [[ "$dry_run" == "true" || ! -d src_all ]]; then
    echo "Setting up source code directory (one-time operation)"
-   ./dl_files.sh $curl_version $zlib_version $szip_version $hdf_version $ncc_version $ncf_version $openmpi_version $cmake_version $mvapich2_version
+   ./dl_files.sh $curl_version $zlib_version $szip_version $hdf_version $ncc_version $ncf_version $ncpp_version $openmpi_version $cmake_version $mvapich2_version
    if [[ $? -ne 0 ]]; then
       echo "Failed to download source files"
       exit 90
@@ -201,7 +214,6 @@ if [[ $? -ne 0 ]]; then
 fi
 echo "Using temporary directory $srcDir"
 
-clobberDir=0
 if [[ -d $installDir ]]; then
    echo "WARNING: Installation directory $installDir already exists"
    if [[ $clobberDir -eq 0 ]]; then
@@ -229,6 +241,7 @@ export SZDIR=$installDir
 export H5DIR=$installDir
 export NCDIR=$installDir
 export NFDIR=$installDir
+export NCPPDIR=$installDir
 
 # NOTE: The installation instructions for HDF5 and NetCDF will show only "make check" and "make install", but this can
 # sometimes result in failure due to a bad build order. Running "make -> make check -> make install" is slower but safer.
@@ -250,6 +263,9 @@ if [[ "$install_ncc" == "true" ]]; then
 fi
 if [[ "$install_ncf" == "true" ]]; then
    echo " NetCDF-Fortran ===> $NFDIR"
+fi
+if [[ "$install_nc_cpp" == "true" ]]; then
+   echo " NetCDF-C++     ===> $NFDIR"
 fi
 
 # 0. Install curl
@@ -357,7 +373,8 @@ if [[ "$install_ncc" == "true" ]]; then
    cp ../netcdf-c-${ncc_version}.tar.gz .
    tar -xzf netcdf-c-${ncc_version}.tar.gz
    cd netcdf-c-${ncc_version}
-   CPPFLAGS=-I${H5DIR}/include LDFLAGS=-L${H5DIR}/lib ./configure --prefix=${NCDIR}
+   NC_EXTRA="--enable-cxx-4"
+   CPPFLAGS=-I${H5DIR}/include LDFLAGS=-L${H5DIR}/lib ./configure --prefix=${NCDIR} ${NC_EXTRA}
    make
    make check
    make install
@@ -376,11 +393,13 @@ if [[ "$install_ncf" == "true" ]]; then
    cd $srcDir
    mkdir -p netcdf-fortran
    cd netcdf-fortran
-   cp ../netcdf-fortran-${ncf_version}.tar.gz .
+   #cp ../netcdf-fortran-${ncf_version}.tar.gz .
+   cp ../netcdf-fortran-${ncf_version}.zip .
    if [[ -d netcdf-fortran-${ncf_version} ]]; then
        rm -rf netcdf-fortran-${ncf_version}
    fi
-   tar -xzf netcdf-fortran-${ncf_version}.tar.gz
+   #tar -xzf netcdf-fortran-${ncf_version}.tar.gz
+   unzip netcdf-fortran-${ncf_version}.zip
    cd netcdf-fortran-${ncf_version}
    CPPFLAGS=-I${NCDIR}/include LDFLAGS=-L${NCDIR}/lib ./configure --prefix=${NFDIR} --disable-dap
    make
@@ -389,6 +408,34 @@ if [[ "$install_ncf" == "true" ]]; then
 
    if [[ -e $NFDIR/bin/nf-config ]]; then
       echo "NetCDF-Fortran successfully installed"
+   else
+      echo "Installation failed: NetCDF-Fortran. Aborting"
+      exit 92
+   fi
+fi
+
+# 5. Install NetCDF-C++
+if [[ "$install_nc_cpp" == "true" ]]; then
+   echo "Installing NetCDF-C++ to $NCPPDIR"
+   cd $srcDir
+   mkdir -p netcdf-cxx4
+   cd netcdf-cxx4
+   f_short=netcdf-cxx4-${ncpp_version}
+   #cp ../netcdf-fortran-${ncf_version}.tar.gz .
+   cp ../${f_short}.tar.gz .
+   if [[ -d ${f_short} ]]; then
+       rm -rf ${f_short}
+   fi
+   tar -xzf ${f_short}.tar.gz
+   #unzip netcdf-fortran-${ncf_version}.zip
+   cd ${f_short}
+   CPPFLAGS=-I${NCDIR}/include LDFLAGS=-L${NCDIR}/lib ./configure --prefix=${NCPPDIR}
+   make
+   make check
+   make install
+
+   if [[ $? == 0 ]]; then
+      echo "NetCDF-C++ successfully installed"
    else
       echo "Installation failed: NetCDF-Fortran. Aborting"
       exit 92

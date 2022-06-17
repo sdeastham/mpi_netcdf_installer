@@ -42,6 +42,7 @@ cd $srcDir
 tar -xzf ${OMPI_DIR}.tar.gz
 cd $OMPI_DIR
 #./configure --prefix=$MPI_ROOT --with-verbs
+#./configure --prefix=$MPI_ROOT --with-pmi=/opt/slurm/include --without-verbs $ucx_opt
 ./configure --prefix=$MPI_ROOT --without-verbs $ucx_opt
 rc=$?
 if [[ $rc -ne 0 ]]; then

@@ -15,17 +15,22 @@ hdf_version=$4
 ncc_version=$5
 ncf_version=$6
 if [[ $# -ge 7 ]]; then
-   openmpi_version=$7
+    ncpp_version=$7
+else
+    ncpp_version="NO_NC_C++"
+fi
+if [[ $# -ge 8 ]]; then
+   openmpi_version=$8
 else
    openmpi_version=NO_MPI
 fi
-if [[ $# -ge 8 ]]; then
-   cmake_version=$8
+if [[ $# -ge 9 ]]; then
+   cmake_version=$9
 else
    cmake_version=NO_CMAKE
 fi
-if [[ $# -ge 9 ]]; then
-   mvapich2_version=$9
+if [[ $# -ge 10 ]]; then
+   mvapich2_version=${10}
 else
    mvapich2_version=NO_MPI
 fi
@@ -45,7 +50,8 @@ if [[ $? -ne 0 ]]; then
 fi
 
 dir_name=zlib-${zlib_version}
-web_address="http://www.zlib.net/${dir_name}.tar.gz"
+#web_address="http://www.zlib.net/${dir_name}.tar.gz"
+web_address="http://www.zlib.net/fossils/${dir_name}.tar.gz"
 wget -c -nd $web_address
 if [[ $? -ne 0 ]]; then
    echo "Failed to download zlib"
@@ -77,10 +83,22 @@ if [[ $? -ne 0 ]]; then
 fi
 
 web_address="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-fortran-${ncf_version}.tar.gz"
+web_address="https://downloads.unidata.ucar.edu/netcdf-fortran/${ncf_version}/netcdf-fortran-${ncf_version}.zip"
 wget -c -nd $web_address
 if [[ $? -ne 0 ]]; then
    echo "Failed to download NetCDF-Fortran"
    exit 80
+fi
+
+if [[ "$ncpp_version" == "NO_NC_C++" ]]; then
+    echo "Skipping NetCDF C++ (no version given)"
+else
+    web_address="https://downloads.unidata.ucar.edu/netcdf-cxx/${ncpp_version}/netcdf-cxx4-${ncpp_version}.tar.gz"
+    wget -c -nd $web_address
+    if [[ $? -ne 0 ]]; then
+       echo "Failed to download NetCDF C++"
+       exit 80
+    fi
 fi
 
 if [[ "$openmpi_version" == "NO_MPI" ]]; then

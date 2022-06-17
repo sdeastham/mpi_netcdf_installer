@@ -75,7 +75,7 @@ if [[ $? -ne 0 ]]; then
     exit 95
 fi
 for mk_cmd in make "make install"; do
-    $mk_cmd
+    $mk_cmd CFLAGS="-Wno-error=array-bounds"
     if [[ $? -ne 0 ]]; then
         echo "Command failed: $mk_cmd"
         exit 94
